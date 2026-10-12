@@ -18,9 +18,17 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     themeToggle.addEventListener('click', () => {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-        applyTheme(newTheme);
+        const root = document.documentElement;
+        const newTheme = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        if (!document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            applyTheme(newTheme);
+            return;
+        }
+        // the new theme opens in a circle from the button (theme-wipe in style.css)
+        const rect = themeToggle.getBoundingClientRect();
+        root.style.setProperty('--vx', rect.left + rect.width / 2 + 'px');
+        root.style.setProperty('--vy', rect.top + rect.height / 2 + 'px');
+        document.startViewTransition(() => applyTheme(newTheme));
     });
 
     // Start in dark mode

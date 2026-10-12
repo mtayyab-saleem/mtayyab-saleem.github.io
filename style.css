@@ -2,56 +2,88 @@
 /* Theme */
 /* ------------------- */
 :root {
-    /* Dark: black and charcoal with a single green accent (cube seams, labels, primary button) */
-    --bg: #060606;
-    --surface: #101112;
-    --surface-2: #18191b;
-    --line: rgba(255, 255, 255, 0.1);
-    --text: #f3f3f1;
-    --text-2: #a2a4a8;
-    --muted: #7d8087;
-    --accent: #67e043;
-    --accent-rgb: 103, 224, 67;
+    /* Dark: midnight navy, a cyan accent (cube seams, labels) and violet as the second tone in
+       gradients and background glows */
+    color-scheme: dark;
+    --bg: #070a14;
+    --surface: #0e1424;
+    --surface-2: #171e35;
+    /* card fill; a gradient in both themes because it is layered under other backgrounds */
+    --card: linear-gradient(160deg, #141b31, #0b101d);
+    --line: rgba(150, 170, 255, 0.15);
+    --text: #eef2ff;
+    --text-2: #a7b0cc;
+    --muted: #78819f;
+    --accent: #4fd8ff;
+    --accent-rgb: 79, 216, 255;
+    --accent-2: #8b7cff;
+    --accent-2-rgb: 139, 124, 255;
     /* accent when it is used as small text; differs from --accent only in the light theme */
-    --accent-ink: #67e043;
-    --on-accent: #050505;
-    --cube-face: linear-gradient(145deg, #25272a, #0c0d0e);
-    --nav-bg: rgba(6, 6, 6, 0.72);
-    --shadow: 0 30px 60px -22px rgba(0, 0, 0, 0.9);
+    --accent-ink: #6fe0ff;
+    --on-accent: #04101c;
+    /* accent gradient as a fill (buttons, lines) and as text */
+    --grad: linear-gradient(120deg, #4fd8ff, #8b7cff);
+    --grad-ink: var(--grad);
+    --cube-face: linear-gradient(145deg, #232c4a, #0a0e1b);
+    --nav-bg: rgba(7, 10, 20, 0.7);
+    --shadow: 0 30px 60px -22px rgba(0, 0, 0, 0.85);
     /* side wall of the extruded cards */
-    --edge: #1f2124;
+    --edge: #1b2342;
     /* soft light behind the cube, and what the cube casts on the floor */
-    --spot: rgba(255, 255, 255, 0.055);
-    --floor: rgba(var(--accent-rgb), 0.16);
+    --spot: rgba(110, 140, 255, 0.1);
+    --floor: rgba(var(--accent-rgb), 0.2);
+    /* strength of the drifting colour fields behind the page */
+    --aurora: 0.2;
     --font-display: 'Oxanium', 'Inter', sans-serif;
     /* edge length of the hero cube; the mobile layout also reserves space from it */
-    --cube: min(34vw, 46vh, 420px);
+    --cube: min(34vw, 46vh, 30rem);
+    /* widest the content gets, and the space kept free at each side of it */
+    --page: 96rem;
+    --gutter: clamp(1.25rem, 5vw, 6rem);
 }
 
 /* Light: black, light grey and sky blue */
 [data-theme="light"] {
+    color-scheme: light;
     --bg: #eceef1;
     --surface: #ffffff;
     --surface-2: #f3f4f6;
+    --card: linear-gradient(160deg, #ffffff, #f7f8fa);
     --line: rgba(10, 10, 10, 0.12);
     --text: #0a0a0b;
     --text-2: #4b5058;
     --muted: #666c75;
     --accent: #0ea5e9;
     --accent-rgb: 14, 165, 233;
+    --accent-2: #6366f1;
+    --accent-2-rgb: 99, 102, 241;
     --accent-ink: #0369a1;
+    --grad: linear-gradient(120deg, #38bdf8, #818cf8);
+    --grad-ink: linear-gradient(120deg, #0369a1, #4f46e5);
     --cube-face: linear-gradient(145deg, #ffffff, #d3d8de);
     --nav-bg: rgba(236, 238, 241, 0.78);
     --shadow: 0 30px 60px -25px rgba(10, 10, 10, 0.3);
     --edge: #c3c8d0;
     --spot: rgba(255, 255, 255, 0.95);
     --floor: rgba(10, 10, 10, 0.3);
+    --aurora: 0.13;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+html {
+    /* everything is sized in rem, so this scales type and spacing up gently on wide screens
+       (16px up to 1280px wide, 20px from about 2080px) */
+    font-size: clamp(100%, 0.6rem + 0.5vw, 125%);
+    scrollbar-color: var(--surface-2) var(--bg);
+}
+
+::selection {
+    background: rgba(var(--accent-rgb), 0.3);
 }
 
 body {
@@ -62,6 +94,26 @@ body {
     overflow-x: hidden;
     counter-reset: section;
     transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Theme switch: the new theme opens in a circle from the toggle button (--vx / --vy, set in
+   script.js). Browsers without view transitions just switch. */
+::view-transition-old(root) {
+    animation: none;
+}
+
+::view-transition-new(root) {
+    animation: theme-wipe 0.6s ease-out;
+}
+
+@keyframes theme-wipe {
+    from {
+        clip-path: circle(0 at var(--vx) var(--vy));
+    }
+
+    to {
+        clip-path: circle(150vmax at var(--vx) var(--vy));
+    }
 }
 
 a:focus-visible,
@@ -105,6 +157,23 @@ button:focus-visible {
     }
 }
 
+/* two soft colour fields drifting behind everything; oversized so the edges never show */
+.scene::before {
+    content: '';
+    position: absolute;
+    inset: -25%;
+    background:
+        radial-gradient(38% 42% at 24% 30%, rgba(var(--accent-2-rgb), var(--aurora)), transparent 70%),
+        radial-gradient(34% 40% at 78% 76%, rgba(var(--accent-rgb), var(--aurora)), transparent 70%);
+    animation: drift 28s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+    to {
+        transform: translate(6%, -5%) rotate(14deg) scale(1.15);
+    }
+}
+
 .cube-wrap {
     --s: var(--cube);
     position: absolute;
@@ -119,7 +188,16 @@ button:focus-visible {
     opacity: calc(1 - var(--open) * var(--cube-fade, 0.87));
 }
 
-/* contact shadow / reflected glow under the cube */
+/* halo behind the cube, so it reads as lit from the back */
+.cube-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -45%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(var(--accent-2-rgb), calc(var(--aurora) * 1.5)), rgba(var(--accent-rgb), calc(var(--aurora) * 0.4)) 55%, transparent);
+}
+
+/* contact shadow / reflected glow under the cube; shrinks as the cube floats up */
 .cube-wrap::after {
     content: '';
     position: absolute;
@@ -131,6 +209,24 @@ button:focus-visible {
     background: radial-gradient(closest-side, var(--floor), transparent);
     filter: blur(8px);
     opacity: calc(1 - var(--open) * 1.5);
+    animation: float-shadow 5s ease-in-out infinite alternate;
+}
+
+@keyframes float-shadow {
+    to {
+        scale: 0.84;
+    }
+}
+
+/* the whole cube hovers gently */
+.cube-stage {
+    animation: float 5s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+    to {
+        translate: 0 -3.5%;
+    }
 }
 
 /* thin ring orbiting the cube; real 3D, so the cube hides the part that passes behind it */
@@ -138,9 +234,20 @@ button:focus-visible {
     position: absolute;
     inset: -36%;
     border-radius: 50%;
-    border: 1px solid rgba(var(--accent-rgb), 0.4);
+    border: 1px solid rgba(var(--accent-rgb), 0.45);
     opacity: calc(1 - var(--open) * 1.2);
+    transform-style: preserve-3d;
     animation: orbit 18s linear infinite;
+}
+
+/* second, dashed ring tilted slightly off the first: it wobbles around it as the pair turns */
+.cube-orbit::before {
+    content: '';
+    position: absolute;
+    inset: -13%;
+    border-radius: 50%;
+    border: 1px dashed rgba(var(--accent-2-rgb), 0.5);
+    transform: rotateX(16deg);
 }
 
 /* satellite */
@@ -192,13 +299,14 @@ button:focus-visible {
     animation: sway 9s ease-in-out infinite alternate;
 }
 
+/* wide enough that the side face and its labels come properly into view */
 @keyframes sway {
     from {
-        transform: rotateY(-34deg);
+        transform: rotateY(-42deg);
     }
 
     to {
-        transform: rotateY(-10deg);
+        transform: rotateY(-8deg);
     }
 }
 
@@ -248,45 +356,103 @@ button:focus-visible {
     transform: rotateX(-90deg) translateZ(var(--z));
 }
 
-/* Panels: the accent border is the seam line. --shade fakes lighting per face. */
+/* Panels. Background layers, top to bottom: a gloss highlight, a faint grid, the per-face shading
+   (--shade fakes the lighting) and the body colour. The cube's outer edges are bright; the seams
+   between panels (--seam, set per panel below) are dim. */
 .face span {
+    --seam: rgba(var(--accent-rgb), 0.22);
     position: absolute;
     display: grid;
     place-items: center;
-    background: linear-gradient(rgba(0, 0, 0, var(--shade, 0.1)), rgba(0, 0, 0, var(--shade, 0.1))), var(--cube-face);
-    border: 1px solid rgba(var(--accent-rgb), 0.55);
-    box-shadow: 0 0 14px rgba(var(--accent-rgb), 0.15);
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.12), transparent 42%),
+        repeating-linear-gradient(0deg, rgba(var(--accent-rgb), 0.07) 0 1px, transparent 1px calc(var(--s) * 0.1)),
+        repeating-linear-gradient(90deg, rgba(var(--accent-rgb), 0.07) 0 1px, transparent 1px calc(var(--s) * 0.1)),
+        linear-gradient(rgba(0, 0, 0, var(--shade, 0.1)), rgba(0, 0, 0, var(--shade, 0.1))),
+        var(--cube-face);
+    border: 1px solid rgba(var(--accent-rgb), 0.8);
+    box-shadow: 0 0 calc(var(--s) * 0.04) rgba(var(--accent-rgb), 0.25), inset 0 0 calc(var(--s) * 0.1) rgba(var(--accent-rgb), 0.12);
     color: var(--text-2);
     font-family: var(--font-display);
-    font-size: calc(var(--s) * 0.2);
-    font-weight: 700;
+    font-size: calc(var(--s) * 0.042);
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
 }
 
-/* top 60% */
+/* top 60%: the face's main glyph, lit */
 .face span:nth-child(1) {
     inset: 0 0 40% 0;
     translate: 0 calc(var(--open) * -24%) calc(var(--open) * 40px);
     rotate: x calc(var(--open) * 14deg);
+    border-bottom-color: var(--seam);
+    color: var(--accent-ink);
+    font-size: calc(var(--s) * 0.2);
+    font-weight: 700;
+    letter-spacing: 0;
+    text-shadow: 0 0 calc(var(--s) * 0.05) rgba(var(--accent-rgb), 0.55);
 }
 
-/* bottom left */
+/* bottom left: label */
 .face span:nth-child(2) {
     inset: 60% 55% 0 0;
     translate: calc(var(--open) * -30%) calc(var(--open) * 36%);
     rotate: z calc(var(--open) * -10deg);
+    border-top-color: var(--seam);
+    border-right-color: var(--seam);
 }
 
-/* bottom right */
+/* bottom right: label */
 .face span:nth-child(3) {
     inset: 60% 0 0 45%;
     translate: calc(var(--open) * 28%) calc(var(--open) * 30%) calc(var(--open) * -30px);
     rotate: y calc(var(--open) * -16deg);
+    border-top-color: var(--seam);
+    border-left-color: var(--seam);
 }
 
 /* Front face: the photo, cut across the same three panels.
-   Each background-size is face size / panel size, so the pieces line up into one image. */
+   Each background-size is face size / panel size, so the pieces line up into one image.
+   No panel glow while closed (it would draw lit lines across the photo); it comes up as they part. */
 .face.front span {
     background-image: url('img/profile-pic.webp');
+    box-shadow: 0 0 calc(var(--s) * 0.04) rgba(var(--accent-rgb), calc(var(--open) * 0.3));
+}
+
+/* Photo finish, laid over the three panels as one sheet so it has no seams: a vignette with a lit
+   rim (::before) and a band of light that crosses every few seconds (::after). Both fade out as
+   soon as the cube starts to open, because the panels move out from under them. */
+.face.front::before,
+.face.front::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateZ(1px);
+    opacity: calc(1 - var(--open) * 6);
+}
+
+.face.front::before {
+    background: radial-gradient(120% 120% at 50% 30%, transparent 50%, rgba(4, 8, 20, 0.5));
+    box-shadow: 0 0 calc(var(--s) * 0.06) rgba(var(--accent-rgb), 0.35), inset 0 0 calc(var(--s) * 0.08) rgba(var(--accent-rgb), 0.25);
+}
+
+.face.front::after {
+    background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.28) 50%, transparent 60%) no-repeat;
+    background-size: 250% 100%;
+    animation: sheen 7s ease-in-out infinite;
+}
+
+/* the band waits off the left edge, then crosses to the right */
+@keyframes sheen {
+
+    0%,
+    55% {
+        background-position: 150% 0;
+    }
+
+    100% {
+        background-position: -50% 0;
+    }
 }
 
 .face.front span:nth-child(1) {
@@ -410,20 +576,42 @@ h3,
 }
 
 .section {
-    padding: 7rem 2rem;
-    max-width: 1200px;
+    padding: 7rem var(--gutter);
+    max-width: var(--page);
     margin: 0 auto;
     position: relative;
 }
 
 .section-head {
+    position: relative;
     display: grid;
     grid-template-columns: 1.1fr 1fr;
     gap: 2rem 4rem;
     align-items: end;
     padding-bottom: 2.5rem;
     margin-bottom: 3.5rem;
-    border-bottom: 1px solid var(--line);
+}
+
+/* the rule under the heading draws itself in when the section scrolls into view */
+.section-head::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent), var(--line) 35%);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s;
+}
+
+.section-head.visible::after {
+    transform: scaleX(1);
+}
+
+.section-head.visible .section-subtitle {
+    animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.25s backwards;
 }
 
 /* Large thin headline with an automatic section number above it */
@@ -449,11 +637,13 @@ h3,
 .section-subtitle {
     color: var(--text-2);
     font-size: 1.05rem;
-    max-width: 460px;
+    max-width: 30rem;
     justify-self: end;
 }
 
 .btn {
+    position: relative;
+    overflow: hidden;
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
@@ -475,9 +665,24 @@ h3,
     translate: 0 -3px;
 }
 
+/* a band of light sweeps across on hover */
+.btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.35) 50%, transparent 65%);
+    translate: -100% 0;
+    transition: translate 0.6s ease;
+    pointer-events: none;
+}
+
+.btn:hover::after {
+    translate: 100% 0;
+}
+
 .btn-primary {
-    background: var(--accent);
-    border-color: var(--accent);
+    background: var(--grad) border-box;
+    border-color: transparent;
     color: var(--on-accent);
 }
 
@@ -502,6 +707,13 @@ header {
     backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--line);
     padding: 1rem 0;
+    animation: drop 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+}
+
+@keyframes drop {
+    from {
+        translate: 0 -100%;
+    }
 }
 
 /* reading progress; --progress (0 to 1) is set in script.js */
@@ -512,7 +724,7 @@ header::after {
     right: 0;
     bottom: -1px;
     height: 2px;
-    background: var(--accent);
+    background: var(--grad);
     transform: scaleX(var(--progress, 0));
     transform-origin: left;
 }
@@ -521,9 +733,9 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
+    max-width: var(--page);
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 var(--gutter);
 }
 
 .logo {
@@ -560,6 +772,29 @@ nav {
 
 .nav-links a:hover {
     color: var(--text);
+}
+
+/* underline that grows from the left on hover and stays under the current section */
+.nav-links a:not(.btn-secondary) {
+    position: relative;
+}
+
+.nav-links a:not(.btn-secondary)::after {
+    content: '';
+    position: absolute;
+    left: 0.9rem;
+    right: 0.9rem;
+    bottom: 0.2rem;
+    height: 2px;
+    background: var(--grad);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+    transform: scaleX(1);
 }
 
 .nav-links a.active {
@@ -618,8 +853,10 @@ nav {
 }
 
 /* drifts slightly against the cursor so the text and the cube read as separate depths */
+/* the second max-width term is the space left of the cube (centred at 72vw, about 0.72 of its edge
+   wide to each side at full sway), so the text never runs under it */
 .hero-content {
-    max-width: 760px;
+    max-width: min(47.5rem, 72vw - var(--cube) * 0.72 - var(--gutter) - 1rem);
     translate: calc(var(--mx, 0) * -14px) calc(var(--my, 0) * -10px);
     transition: translate 0.5s ease-out;
 }
@@ -700,7 +937,8 @@ nav {
 }
 
 .hero-content h1 {
-    font-size: clamp(2.6rem, 6.4vw, 5.6rem);
+    /* 5.2vw keeps "Tayyab Saleem" on one line within that width */
+    font-size: clamp(2.6rem, 5.2vw, 5.6rem);
     font-weight: 300;
     line-height: 0.98;
     text-transform: uppercase;
@@ -708,14 +946,26 @@ nav {
     margin-bottom: 1.75rem;
 }
 
+/* the gradient is twice the width of the text and slides back and forth under it */
 .hero-content h1 strong {
     font-weight: 700;
+    background: var(--grad-ink) 0 0 / 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 5s ease-in-out infinite alternate;
+}
+
+@keyframes shimmer {
+    to {
+        background-position: 100% 0;
+    }
 }
 
 .hero-content p {
     font-size: 1.05rem;
     color: var(--text-2);
-    max-width: 520px;
+    max-width: 34rem;
     margin-bottom: 2.25rem;
 }
 
@@ -760,7 +1010,8 @@ nav {
     padding: 1.75rem 0;
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
-    background: var(--bg);
+    background: var(--nav-bg);
+    backdrop-filter: blur(16px);
 }
 
 /* two identical spans; sliding by half the track loops seamlessly */
@@ -797,25 +1048,57 @@ nav {
 /* ------------------- */
 /* Cards tilt toward the cursor. --tx / --ty (-0.5 to 0.5) are set in script.js;
    --tilt is the max angle, --lift the hover rise. */
+/* registered so they can be transitioned / animated */
+@property --glow {
+    syntax: '<number>';
+    inherits: false;
+    initial-value: 0;
+}
+
+@property --angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
+
 .skill-item,
 .service-card,
 .project-card {
     --tilt: 14deg;
-    background: var(--surface);
+    /* pool of light under the cursor; --glow fades it in on hover */
+    --hl: radial-gradient(circle at calc(50% + var(--tx, 0) * 100%) calc(50% - var(--ty, 0) * 100%), rgba(var(--accent-rgb), var(--glow)), transparent 55%);
+    background: var(--hl), var(--card);
     border: 1px solid var(--line);
     border-radius: 6px;
     transform: perspective(900px) rotateX(calc(var(--ty, 0) * var(--tilt))) rotateY(calc(var(--tx, 0) * var(--tilt))) translateY(var(--lift, 0px));
     /* first shadow is the slab's side wall: it slides opposite to the tilt, so the card reads as a
        solid block with thickness rather than a flat sheet */
     box-shadow: calc(var(--tx, 0) * -20px) calc(5px + var(--ty, 0) * 20px) 0 var(--edge), var(--shadow);
-    transition: transform 0.25s ease-out, border-color 0.3s ease, box-shadow 0.25s ease-out;
+    transition: transform 0.25s ease-out, border-color 0.3s ease, box-shadow 0.25s ease-out, --glow 0.3s ease;
 }
 
 .skill-item:hover,
 .service-card:hover,
 .project-card:hover {
     --lift: -6px;
+    --glow: 0.16;
     border-color: rgba(var(--accent-rgb), 0.6);
+}
+
+/* Featured project and video player: a streak of accent light travels round the border.
+   The fill sits on the padding box; the conic gradient shows through the transparent border. */
+.project-card.featured,
+.player {
+    border-color: transparent;
+    background: var(--hl, none) padding-box, var(--card) padding-box,
+        conic-gradient(from var(--angle), var(--line) 0 65%, var(--accent), var(--accent-2), var(--line)) border-box;
+    animation: border-run 7s linear infinite;
+}
+
+@keyframes border-run {
+    to {
+        --angle: 360deg;
+    }
 }
 
 /* Reveal: when a grid scrolls in, its cards swing up one after another.
@@ -832,6 +1115,17 @@ nav {
         opacity: 0;
         transform: perspective(900px) rotateX(-40deg) translateY(50px) scale(0.94);
     }
+}
+
+/* the featured card keeps its border streak running after it has flipped in */
+.fade-in.visible>.project-card.featured {
+    animation: flip-in 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) backwards, border-run 7s linear infinite;
+}
+
+/* Lists whose rows come in one after another once they scroll in; --i as above */
+.stagger.visible>* {
+    animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+    animation-delay: calc(0.15s + var(--i, 0) * 90ms);
 }
 
 /* ------------------- */
@@ -858,7 +1152,7 @@ nav {
 
 .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
     gap: 1rem;
 }
 
@@ -868,18 +1162,20 @@ nav {
     align-items: center;
     justify-content: center;
     gap: 0.9rem;
-    min-height: 120px;
+    min-height: 7.5rem;
     padding: 1.5rem 1rem;
     text-align: center;
 }
 
 .skill-item i {
     font-size: 1.7rem;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, translate 0.3s ease, scale 0.3s ease;
 }
 
 .skill-item:hover i {
     color: var(--accent-ink);
+    translate: 0 -4px;
+    scale: 1.15;
 }
 
 .skill-item span {
@@ -893,7 +1189,7 @@ nav {
 /* ------------------- */
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
     gap: 1.5rem;
 }
 
@@ -992,9 +1288,9 @@ nav {
     align-items: start;
 }
 
+/* fill and border colour come from the border-streak rule under 3D Panels */
 .player {
-    background: var(--surface);
-    border: 1px solid var(--line);
+    border: 1px solid transparent;
     border-radius: 6px;
     overflow: hidden;
     box-shadow: 0 5px 0 var(--edge), var(--shadow);
@@ -1111,9 +1407,11 @@ nav {
 /* ------------------- */
 /* Portfolio Section */
 /* ------------------- */
+/* Column count is set per breakpoint (see Responsive Design) so that, with the featured card on
+   its own row and the closing tile taking up the slack, the last row is always full. */
 .project-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.75rem;
     counter-reset: project;
 }
@@ -1312,6 +1610,28 @@ nav {
     translate: 6px 0;
 }
 
+/* Closing tile: link to the GitHub profile */
+.project-more {
+    counter-increment: none;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 2rem;
+    text-align: center;
+}
+
+.project-more>i {
+    font-size: 2.4rem;
+    color: var(--accent-ink);
+    margin-bottom: 0.5rem;
+}
+
+.project-more .project-link {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+}
+
 /* ------------------- */
 /* Contact Section */
 /* ------------------- */
@@ -1319,7 +1639,7 @@ nav {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
     gap: 3rem;
-    background: var(--surface);
+    background: var(--card);
     padding: 3rem;
     border-radius: 6px;
     border: 1px solid var(--line);
@@ -1394,12 +1714,13 @@ nav {
 footer {
     background: var(--surface);
     border-top: 1px solid var(--line);
-    padding: 3.5rem 2rem;
+    padding: 3.5rem 0;
 }
 
 .footer-content {
-    max-width: 1200px;
+    max-width: var(--page);
     margin: 0 auto;
+    padding: 0 var(--gutter);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1474,9 +1795,32 @@ footer {
 /* ------------------- */
 /* Responsive Design */
 /* ------------------- */
+@media (max-width: 1500px) {
+    .project-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* seven cards leave one alone on the last row; the closing tile fills the other two columns */
+    .project-more {
+        grid-column: span 2;
+    }
+}
+
 @media (max-width: 1024px) {
+    :root {
+        --gutter: 1.5rem;
+    }
+
     .section {
-        padding: 5rem 1.5rem;
+        padding-block: 5rem;
+    }
+
+    .project-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .project-more {
+        grid-column: auto;
     }
 }
 
@@ -1490,6 +1834,7 @@ footer {
 @media (max-width: 768px) {
     :root {
         --cube: min(46vw, 28vh);
+        --gutter: 1rem;
     }
 
     /* nav links become a drop-down panel opened by the menu button */
@@ -1573,10 +1918,6 @@ footer {
         right: 1.5rem;
     }
 
-    nav {
-        padding: 0 1rem;
-    }
-
     /* cube sits at the top of the first screen; the hero text starts below it */
     .scene {
         --cx: 50%;
@@ -1589,7 +1930,7 @@ footer {
     }
 
     .section {
-        padding: 4rem 1rem;
+        padding-block: 4rem;
     }
 
     /* must stay after .section: it overrides that padding */
@@ -1597,6 +1938,11 @@ footer {
         align-items: flex-start;
         padding-top: calc(7.5rem + var(--cube) * 1.75);
         padding-bottom: 5rem;
+    }
+
+    /* the cube is above the text here, not beside it */
+    .hero-content {
+        max-width: none;
     }
 
     /* keep only the bottom cube; the others would sit behind the text */
@@ -1621,6 +1967,12 @@ footer {
     .footer-links {
         flex-wrap: wrap;
         justify-content: center;
+    }
+}
+
+@media (max-width: 640px) {
+    .project-grid {
+        grid-template-columns: 1fr;
     }
 }
 
