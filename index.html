@@ -7,31 +7,41 @@
     <title>M. Tayyab Saleem - Game Developer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oxanium:wght@300;400;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="bg-animation"></div>
-    <ul class="background-shapes">
-        <li><i class="fas fa-gamepad"></i></li>
-        <li><i class="fas fa-laptop-code"></i></li>
-        <li><i class="fas fa-bug"></i></li>
-        <li><i class="fas fa-terminal"></i></li>
-        <li><i class="fas fa-keyboard"></i></li>
-        <li><i class="fas fa-microchip"></i></li>
-        <li><i class="fas fa-cogs"></i></li>
-        <li><i class="fas fa-code"></i></li>
-        <li><i class="fas fa-hdd"></i></li>
-        <li><i class="fas fa-dice-d20"></i></li> <!-- Gaming Dice -->
-    </ul>
+    <!-- 3D scene, fixed behind the page. Each cube face is three panels (span) that split apart
+         as --open goes 0 -> 1; script.js drives --open and --spin from the scroll position. -->
+    <div class="scene" aria-hidden="true">
+        <div class="cube-wrap">
+            <div class="cube-stage">
+                <div class="cube-glow"></div>
+                <div class="cube-orbit"></div>
+                <div class="cube-tilt">
+                    <div class="cube-spin">
+                        <div class="cube">
+                            <div class="face front"><span></span><span></span><span></span></div>
+                            <div class="face right"><span><i class="fab fa-unity"></i></span><span></span><span></span></div>
+                            <div class="face back"><span>C#</span><span></span><span></span></div>
+                            <div class="face left"><span><i class="fas fa-gamepad"></i></span><span></span><span></span></div>
+                            <div class="face top"><span></span><span></span><span></span></div>
+                            <div class="face bottom"><span></span><span></span><span></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- six spans = six faces -->
+        <div class="mini-cube"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="mini-cube"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="mini-cube"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="mini-cube"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </div>
 
-
-    <ul>
-        <li></li>
-    </ul>
     <header>
         <nav>
             <div class="logo">Tayyab</div>
@@ -39,18 +49,17 @@
                 <li><a href="#home" class="active">Home</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#services">Services</a></li>
+                <li><a href="#showcase">Gameplay</a></li>
                 <li><a href="#portfolio">Portfolio</a></li>
                 <li><a href="#contact">Contact</a></li>
                 <li><a href="cv/tayyab_cv.pdf" class="btn-secondary" download>Download CV</a></li>
             </ul>
             <div class="nav-controls">
-                <a href="cv/tayyab_cv.pdf" class="btn-cv-mobile" download aria-label="Download CV">
-                    <span>CV</span>
-
-                    <i class="fas fa-download"></i>
-                </a>
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
                     <i class="fas fa-moon"></i>
+                </button>
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
                 </button>
             </div>
         </nav>
@@ -58,42 +67,19 @@
 
     <main>
         <section id="home" class="hero section">
-            <div class="floating-elements">
-                <div class="floating-element"></div>
-                <div class="floating-element"></div>
-                <div class="floating-element"></div>
-            </div>
-            <div class="hero-container">
-                <div class="hero-content">
-                    <div class="subtitle">UNITY & C# GAME DEVELOPER</div>
-                    <h1>Muhammad Tayyab Saleem</h1>
-                    <p>A passionate and skilled Game Developer specializing in Unity and C#. With a strong foundation in
-                        .NET and interactive application development, I build immersive and engaging games and
-                        experiences. My goal is to bring creative ideas to life through code.</p>
-                    <div class="hero-buttons">
-                        <a href="#portfolio" class="btn btn-primary">View My Work <i class="fas fa-arrow-right"></i></a>
-                        <a href="https://github.com/m-tayyabsaleem" target="_blank" class="btn btn-secondary"><i
-                                class="fab fa-github"></i> GitHub</a>
-                        <a href="https://linkedin.com/in/mtayyabsaleem" target="_blank" class="btn btn-secondary"><i
-                                class="fab fa-linkedin"></i> LinkedIn</a>
-                    </div>
-                </div>
-
-                <div class="hero-visual">
-                    <div class="hero-avatar">
-                        <img src="img/profile-pic.jpg" alt="M. Tayyab Saleem">
-                    </div>
-                    <div class="orbit-container">
-                        <div class="orbit-icon icon-unity">
-                            <i class="fab fa-unity"></i>
-                        </div>
-                        <div class="orbit-icon icon-csharp">
-                            <span>C#</span>
-                        </div>
-                        <div class="orbit-icon icon-gaming">
-                            <i class="fas fa-gamepad"></i>
-                        </div>
-                    </div>
+            <div class="hero-content">
+                <div class="status-chip">Open to new projects</div>
+                <div class="subtitle">Unity & C# Game Developer</div>
+                <h1>Muhammad <strong>Tayyab</strong> Saleem</h1>
+                <p>A passionate and skilled Game Developer specializing in Unity and C#. With a strong foundation in
+                    .NET and interactive application development, I build immersive and engaging games and
+                    experiences. My goal is to bring creative ideas to life through code.</p>
+                <div class="hero-buttons">
+                    <a href="#portfolio" class="btn btn-primary">View My Work <i class="fas fa-arrow-right"></i></a>
+                    <a href="https://github.com/mtayyab-saleem" target="_blank" rel="noopener"
+                        class="btn btn-secondary"><i class="fab fa-github"></i> GitHub</a>
+                    <a href="https://linkedin.com/in/mtayyabsaleem" target="_blank" rel="noopener"
+                        class="btn btn-secondary"><i class="fab fa-linkedin"></i> LinkedIn</a>
                 </div>
             </div>
             <div class="scroll-indicator">
@@ -101,10 +87,20 @@
             </div>
         </section>
 
+        <!-- decorative strip; the text is duplicated so the loop is seamless -->
+        <div class="marquee" aria-hidden="true">
+            <div class="marquee-track">
+                <span><b>Unity</b> C# Scripting <b>Gameplay</b> Physics <b>Multiplayer</b> Android <b>.NET</b> UI</span>
+                <span><b>Unity</b> C# Scripting <b>Gameplay</b> Physics <b>Multiplayer</b> Android <b>.NET</b> UI</span>
+            </div>
+        </div>
+
         <section id="skills" class="section">
-            <h2 class="section-title fade-in">Technical Expertise</h2>
-            <p class="section-subtitle fade-in">My technical toolkit is centered around game and desktop development,
+            <div class="section-head fade-in">
+                <h2 class="section-title">Technical Expertise</h2>
+                <p class="section-subtitle">My technical toolkit is centered around game and desktop development,
                 complemented by web and mobile skills.</p>
+            </div>
 
             <h3 class="skills-subtitle fade-in">Core Expertise (Game & Desktop)</h3>
             <div class="skills-grid fade-in">
@@ -164,182 +160,273 @@
         </section>
 
         <section id="services" class="section">
-            <h2 class="section-title fade-in">What I Do</h2>
-            <p class="section-subtitle fade-in">I focus on creating innovative solutions, with a special passion for
+            <div class="section-head fade-in">
+                <h2 class="section-title">What I Do</h2>
+                <p class="section-subtitle">I focus on creating innovative solutions, with a special passion for
                 interactive entertainment.</p>
-            <div class="services-grid">
-                <div class="service-card fade-in">
+            </div>
+            <div class="services-grid fade-in">
+                <div class="service-card">
                     <div class="service-icon"><i class="fas fa-gamepad"></i></div>
                     <h3 class="service-title">Unity Game Development</h3>
                     <p class="service-description">Developing 2D and 3D games from concept to deployment using the Unity
                         Engine. I specialize in C# scripting, physics, UI, and creating engaging gameplay loops.</p>
                 </div>
-                <div class="service-card fade-in">
-                    <div class="service-icon"><i class="fas fa-desktop"></i></div>
-                    <h3 class="service-title">Desktop Application Development</h3>
-                    <p class="service-description">Creating robust and efficient desktop applications using C# and the
-                        .NET Framework, focusing on clean architecture and user-friendly interfaces.</p>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-network-wired"></i></div>
+                    <h3 class="service-title">Multiplayer & Enemy AI</h3>
+                    <p class="service-description">Building LAN and hotspot multiplayer for up to four players, with
+                        AI opponents driven by Unity NavMesh and state machines, as in my final year project Last
+                        Stand.</p>
                 </div>
-                <div class="service-card fade-in">
-                    <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
-                    <h3 class="service-title">Mobile & Web Development</h3>
-                    <p class="service-description">Building native Android apps with Java and dynamic web applications,
-                        demonstrating versatility across different platforms and technologies.</p>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-mobile-screen"></i></div>
+                    <h3 class="service-title">Android Game Builds</h3>
+                    <p class="service-description">Taking games to Android with on-screen controls, performance tuned
+                        for mid-range devices and optimized APK builds.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="showcase" class="section">
+            <div class="section-head fade-in">
+                <h2 class="section-title">Last Stand in Action</h2>
+                <p class="section-subtitle">A 47-second look at my final year project, an offline co-op battle
+                    royale for Android.</p>
+            </div>
+
+            <div class="showcase fade-in">
+                <!-- custom controls, wired up in script.js (buttons act on data-action) -->
+                <div class="player">
+                    <video id="showcaseVideo" src="video/last-stand.mp4" poster="video/last-stand-poster.jpg"
+                        preload="metadata" playsinline></video>
+                    <div class="player-controls">
+                        <button type="button" data-action="play" aria-label="Play or pause"><i
+                                class="fas fa-play"></i></button>
+                        <button type="button" data-action="stop" aria-label="Stop"><i class="fas fa-stop"></i></button>
+                        <input type="range" class="player-seek" min="0" max="47" step="0.1" value="0"
+                            aria-label="Seek">
+                        <span class="player-time">0:00 / 0:47</span>
+                        <button type="button" data-action="mute" aria-label="Mute or unmute"><i
+                                class="fas fa-volume-high"></i></button>
+                        <input type="range" class="player-volume" min="0" max="1" step="0.05" value="1"
+                            aria-label="Volume">
+                        <button type="button" data-action="fullscreen" aria-label="Full screen"><i
+                                class="fas fa-expand"></i></button>
+                    </div>
+                </div>
+
+                <div class="showcase-details">
+                    <p class="project-category">Final Year Project · Unity · Android</p>
+                    <h3>Last Stand: Co-op Survival Shooter</h3>
+                    <p>An offline battle royale for Android. One phone hosts the match on its hotspot, friends join,
+                        and the last team standing wins.</p>
+                    <ul class="showcase-list">
+                        <li><span><strong>No internet, no servers</strong>A battle royale that runs on your phone
+                                alone.</span></li>
+                        <li><span><strong>Host a match</strong>One phone hosts and friends join on its
+                                hotspot.</span></li>
+                        <li><span><strong>Solo, duo or squad</strong>Teammates cannot hurt each other.</span></li>
+                        <li><span><strong>1 to 4 players</strong>Empty slots are filled with AI bots.</span></li>
+                    </ul>
+                    <a href="https://github.com/mtayyab-saleem/Last-Stand-Co_op-Survival-Shooter" target="_blank"
+                        rel="noopener" class="btn btn-secondary"><i class="fab fa-github"></i> View on GitHub</a>
                 </div>
             </div>
         </section>
 
         <section id="portfolio" class="section">
-            <h2 class="section-title fade-in">My Projects</h2>
-            <p class="section-subtitle fade-in">A selection of projects that showcase my skills in game development,
+            <div class="section-head fade-in">
+                <h2 class="section-title">My Projects</h2>
+                <p class="section-subtitle">A selection of projects that showcase my skills in game development,
                 desktop applications, and more.</p>
+            </div>
 
-            <div class="project-list fade-in">
-                <div class="project-item">
-                    <p class="project-category">Unity Game</p>
-
-                    <h3 class="project-title">
-                        <a href="#" target="_blank">
-                            Cube Runner - Endless Running Game
-                            <i class="fas fa-arrow-up-right-from-square"></i>
-                        </a>
-                    </h3>
-
-                    <div class="project-tags">
-                        <span>Unity</span>
-                        <span>C#</span>
-                        <span>Android</span>
-                        <span>Mobile Game</span>
-                        <span>APK</span>
+            <!-- Each card is one link to its repo. The <img> is GitHub's auto-generated repo preview; swap its
+                 src for a real screenshot (e.g. img/projects/cube-runner.jpg) any time. If an image fails to
+                 load it removes itself and the icon underneath shows instead. -->
+            <div class="project-grid fade-in">
+                <a class="project-card featured" href="https://github.com/mtayyab-saleem/Last-Stand-Co_op-Survival-Shooter"
+                    target="_blank" rel="noopener">
+                    <div class="project-media">
+                        <i class="fas fa-crosshairs"></i>
+                        <img src="https://opengraph.githubassets.com/1/mtayyab-saleem/Last-Stand-Co_op-Survival-Shooter"
+                            alt="Last Stand repository preview" loading="lazy" onerror="this.remove()">
                     </div>
-
-                    <p class="project-description">
-                        An engaging endless running game developed using Unity Engine with C# scripting for Android
-                        platform.
-                        Features core gameplay mechanics including player movement, obstacle avoidance, coin collection
-                        system,
-                        and progressive speed increase. Built as an optimized APK for Android distribution with smooth
-                        performance
-                        and intuitive user interface design.
-                    </p>
-                </div>
-
-                <div class="project-item">
-                    <p class="project-category">Console Application</p>
-
-                    <h3 class="project-title">
-                        <a href="https://github.com/m-tayyabsaleem/ElectronicsShop" target="_blank">
-                            ElectronicsShop
-                            <i class="fas fa-arrow-up-right-from-square"></i>
-                        </a>
-                    </h3>
-
-                    <div class="project-tags">
-                        <span>C#</span>
-                        <span>Billing System</span>
-                        <span>Console App</span>
+                    <div class="project-body">
+                        <p class="project-category">Unity Game · Final Year Project</p>
+                        <h3 class="project-title">Last Stand: Co-op Survival Shooter</h3>
+                        <p class="project-description">An Android battle royale third-person shooter where 1–4 players
+                            connect over LAN or hotspot and fight each other and AI-controlled enemies, with a loot
+                            system, a shrinking safe zone and solo, duo and squad modes.</p>
+                        <div class="project-tags">
+                            <span>Unity</span>
+                            <span>C#</span>
+                            <span>LAN Multiplayer</span>
+                            <span>AI</span>
+                        </div>
+                        <span class="project-link">View on GitHub <i class="fas fa-arrow-right"></i></span>
                     </div>
+                </a>
 
-                    <p class="project-description">
-                        A simple C# console application for purchasing electronic items. It includes item selection,
-                        quantity handling, and automated bill generation. Useful for understanding basic programming
-                        logic and console-based UI.
-                    </p>
-                </div>
-
-
-                <div class="project-item">
-                    <p class="project-category">Console Game</p>
-
-                    <h3 class="project-title">
-                        <a href="https://github.com/m-tayyabsaleem/Number-Guessing-Game" target="_blank">
-                            Number-Guessing-Game
-                            <i class="fas fa-arrow-up-right-from-square"></i>
-                        </a>
-                    </h3>
-
-                    <div class="project-tags">
-                        <span>C#</span>
-                        <span>Console</span>
-                        <span>Game Logic</span>
+                <a class="project-card" href="https://github.com/mtayyab-saleem/Flappy-Bird" target="_blank"
+                    rel="noopener">
+                    <div class="project-media">
+                        <i class="fas fa-dove"></i>
+                        <img src="https://opengraph.githubassets.com/1/mtayyab-saleem/Flappy-Bird"
+                            alt="Flappy Bird repository preview" loading="lazy" onerror="this.remove()">
                     </div>
-
-                    <p class="project-description">
-                        A simple number guessing game built in C#. The player has to guess a random number between 1 and
-                        30 with hints provided after each attempt. It demonstrates conditional logic, loops, and user
-                        interaction in a console environment.
-                    </p>
-                </div>
-                <div class="project-item">
-                    <p class="project-category">Console Application</p>
-
-                    <h3 class="project-title">
-                        <a href="https://github.com/m-tayyabsaleem/SimpleCalculator-CSharp" target="_blank">
-                            SimpleCalculator-CSharp
-                            <i class="fas fa-arrow-up-right-from-square"></i>
-                        </a>
-                    </h3>
-
-                    <div class="project-tags">
-                        <span>C#</span>
-                        <span>Calculator</span>
-                        <span>Console App</span>
+                    <div class="project-body">
+                        <p class="project-category">Unity Game</p>
+                        <h3 class="project-title">Flappy Bird</h3>
+                        <p class="project-description">A Flappy Bird clone built in Unity with C# to practice game
+                            development fundamentals and smooth sprite-based mechanics. Fly through the pipes and beat
+                            the high score.</p>
+                        <div class="project-tags">
+                            <span>Unity</span>
+                            <span>C#</span>
+                            <span>2D</span>
+                        </div>
+                        <span class="project-link">View on GitHub <i class="fas fa-arrow-right"></i></span>
                     </div>
+                </a>
 
-                    <p class="project-description">
-                        A basic calculator application built using C# in the console. It performs standard arithmetic
-                        operations such as addition, subtraction, multiplication, and division. Great for beginners
-                        learning console input/output and logic building.
-                    </p>
-                </div>
-                <div class="project-item">
-                    <p class="project-category">Web Application</p>
-
-                    <h3 class="project-title">
-                        <a href="https://github.com/m-tayyabsaleem/Web-Project" target="_blank">
-                            Web-Project (Weather App)
-                            <i class="fas fa-arrow-up-right-from-square"></i>
-                        </a>
-                    </h3>
-
-                    <div class="project-tags">
-                        <span>Java</span>
-                        <span>Servlets</span>
-                        <span>HTML</span>
-                        <span>CSS</span>
-                        <span>JavaScript</span>
+                <a class="project-card" href="https://github.com/mtayyab-saleem/Quick-Notes" target="_blank"
+                    rel="noopener">
+                    <div class="project-media">
+                        <i class="fas fa-note-sticky"></i>
+                        <img src="https://opengraph.githubassets.com/1/mtayyab-saleem/Quick-Notes"
+                            alt="Quick Notes repository preview" loading="lazy" onerror="this.remove()">
                     </div>
-
-                    <p class="project-description">
-                        A responsive weather web application that fetches real-time weather data using the Weatherstack
-                        API. Built with Java Servlets, HTML5, CSS3, and JavaScript, and deployed on Apache Tomcat 9. It
-                        displays current weather for a given location with a clean UI.
-                    </p>
-                </div>
-
-                <div class="project-item">
-                    <p class="project-category">MOBILE APPLICATION</p>
-                    <h3 class="project-title">
-                        <a href="https://github.com/m-tayyab-mughal/Quick-Notes-App" target="_blank">
-                            Quick Notes Android App
-                            <i class="fas fa-arrow-up-right-from-square"></i>
-                        </a>
-                    </h3>
-                    <div class="project-tags">
-                        <span>Java</span>
-                        <span>Android</span>
-                        <span>Firebase</span>
-                        <span>Mobile</span>
+                    <div class="project-body">
+                        <p class="project-category">Mobile Application</p>
+                        <h3 class="project-title">Quick Notes</h3>
+                        <p class="project-description">A note-taking app for Android with full CRUD functionality,
+                            Firebase authentication and Firestore for real-time data synchronization.</p>
+                        <div class="project-tags">
+                            <span>Java</span>
+                            <span>Android</span>
+                            <span>Firebase</span>
+                        </div>
+                        <span class="project-link">View on GitHub <i class="fas fa-arrow-right"></i></span>
                     </div>
-                    <p class="project-description">A note-taking app for Android with full CRUD functionality. It uses
-                        Firebase for secure user authentication and Firestore for real-time data synchronization.</p>
-                </div>
+                </a>
+
+                <a class="project-card" href="https://github.com/m-tayyabsaleem/CubeRunner" target="_blank"
+                    rel="noopener">
+                    <div class="project-media">
+                        <i class="fas fa-cube"></i>
+                        <img src="https://opengraph.githubassets.com/1/m-tayyabsaleem/CubeRunner"
+                            alt="Cube Runner repository preview" loading="lazy" onerror="this.remove()">
+                    </div>
+                    <div class="project-body">
+                        <p class="project-category">Unity Game</p>
+                        <h3 class="project-title">Cube Runner</h3>
+                        <p class="project-description">An endless runner for Android built in Unity with C#. Player
+                            movement, obstacle avoidance, coin collection and steadily increasing speed, shipped as an
+                            optimized APK.</p>
+                        <div class="project-tags">
+                            <span>Unity</span>
+                            <span>C#</span>
+                            <span>Android</span>
+                        </div>
+                        <span class="project-link">View on GitHub <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+
+                <a class="project-card" href="https://github.com/m-tayyabsaleem/Web-Project" target="_blank"
+                    rel="noopener">
+                    <div class="project-media">
+                        <i class="fas fa-cloud-sun"></i>
+                        <img src="https://opengraph.githubassets.com/1/m-tayyabsaleem/Web-Project"
+                            alt="Weather App repository preview" loading="lazy" onerror="this.remove()">
+                    </div>
+                    <div class="project-body">
+                        <p class="project-category">Web Application</p>
+                        <h3 class="project-title">Weather App</h3>
+                        <p class="project-description">A responsive weather app that fetches real-time data from the
+                            Weatherstack API. Built with Java Servlets, HTML5, CSS3 and JavaScript, deployed on Apache
+                            Tomcat 9.</p>
+                        <div class="project-tags">
+                            <span>Java</span>
+                            <span>Servlets</span>
+                            <span>JavaScript</span>
+                        </div>
+                        <span class="project-link">View on GitHub <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+
+                <a class="project-card" href="https://github.com/m-tayyabsaleem/ElectronicsShop" target="_blank"
+                    rel="noopener">
+                    <div class="project-media">
+                        <i class="fas fa-receipt"></i>
+                        <img src="https://opengraph.githubassets.com/1/m-tayyabsaleem/ElectronicsShop"
+                            alt="Electronics Shop repository preview" loading="lazy" onerror="this.remove()">
+                    </div>
+                    <div class="project-body">
+                        <p class="project-category">Console Application</p>
+                        <h3 class="project-title">Electronics Shop</h3>
+                        <p class="project-description">A C# console app for purchasing electronic items, with item
+                            selection, quantity handling and automated bill generation.</p>
+                        <div class="project-tags">
+                            <span>C#</span>
+                            <span>Billing System</span>
+                            <span>Console App</span>
+                        </div>
+                        <span class="project-link">View on GitHub <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+
+                <a class="project-card" href="https://github.com/m-tayyabsaleem/Number-Guessing-Game" target="_blank"
+                    rel="noopener">
+                    <div class="project-media">
+                        <i class="fas fa-dice"></i>
+                        <img src="https://opengraph.githubassets.com/1/m-tayyabsaleem/Number-Guessing-Game"
+                            alt="Number Guessing Game repository preview" loading="lazy" onerror="this.remove()">
+                    </div>
+                    <div class="project-body">
+                        <p class="project-category">Console Game</p>
+                        <h3 class="project-title">Number Guessing Game</h3>
+                        <p class="project-description">Guess a random number between 1 and 30, with a hint after every
+                            attempt. Demonstrates conditional logic, loops and user interaction in C#.</p>
+                        <div class="project-tags">
+                            <span>C#</span>
+                            <span>Console</span>
+                            <span>Game Logic</span>
+                        </div>
+                        <span class="project-link">View on GitHub <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+
+                <a class="project-card" href="https://github.com/m-tayyabsaleem/SimpleCalculator-CSharp"
+                    target="_blank" rel="noopener">
+                    <div class="project-media">
+                        <i class="fas fa-calculator"></i>
+                        <img src="https://opengraph.githubassets.com/1/m-tayyabsaleem/SimpleCalculator-CSharp"
+                            alt="Simple Calculator repository preview" loading="lazy" onerror="this.remove()">
+                    </div>
+                    <div class="project-body">
+                        <p class="project-category">Console Application</p>
+                        <h3 class="project-title">Simple Calculator</h3>
+                        <p class="project-description">A console calculator in C# covering addition, subtraction,
+                            multiplication and division, with console input and output handling.</p>
+                        <div class="project-tags">
+                            <span>C#</span>
+                            <span>Calculator</span>
+                            <span>Console App</span>
+                        </div>
+                        <span class="project-link">View on GitHub <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
             </div>
         </section>
+
         <section id="contact" class="section">
-            <h2 class="section-title fade-in">Get In Touch</h2>
-            <p class="section-subtitle fade-in">I'm always open to discussing new projects, creative ideas, or
+            <div class="section-head fade-in">
+                <h2 class="section-title">Get In Touch</h2>
+                <p class="section-subtitle">I'm always open to discussing new projects, creative ideas, or
                 opportunities to collaborate.</p>
+            </div>
             <div class="contact-container">
                 <div class="contact-info fade-in">
                     <h3>Contact Information</h3>
@@ -388,9 +475,9 @@
                 <a href="#portfolio">Portfolio</a>
             </div>
             <div class="footer-social">
-                <a href="https://github.com/m-tayyabsaleem" target="_blank" aria-label="GitHub"><i
+                <a href="https://github.com/mtayyab-saleem" target="_blank" rel="noopener" aria-label="GitHub"><i
                         class="fab fa-github"></i></a>
-                <a href="https://linkedin.com/in/mtayyabsaleem" target="_blank" aria-label="LinkedIn"><i
+                <a href="https://linkedin.com/in/mtayyabsaleem" target="_blank" rel="noopener" aria-label="LinkedIn"><i
                         class="fab fa-linkedin"></i></a>
             </div>
         </div>
